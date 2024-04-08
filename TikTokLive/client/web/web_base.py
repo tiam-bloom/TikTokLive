@@ -75,6 +75,9 @@ class TikTokHTTPClient:
         )
 
     async def im_fetch(self, client):
+        # cookies = {
+        #     'ttwid': '1%7CX76TLz2ka4LFawrghw22Z2eH76AFtn0Eme207EhpZrM%7C1712228324%7C9ce3aa97b3646d7efef69f9d1cf199d58cd44d37c42483fa18f4ef7c4440056c',
+        # }
         headers = {
             'accept': '*/*',
             'accept-language': 'zh-CN,zh;q=0.9',
