@@ -62,6 +62,7 @@ class _WebDefaults:
     tiktok_app_url: str = "https://www.tiktok.com"
     tiktok_sign_url: str = "https://tiktok.eulerstream.com"
     tiktok_webcast_url: str = 'https://webcast.tiktok.com/webcast'
+    tiktok_webcast_us_url: str = 'https://webcast.us.tiktok.com/webcast'
     client_params: Dict[str, Any] = field(default_factory=lambda: DEFAULT_CLIENT_PARAMS)
     client_headers: Dict[str, Any] = field(default_factory=lambda: DEFAULT_REQUEST_HEADERS)
     tiktok_sign_api_key: Optional[str] = None

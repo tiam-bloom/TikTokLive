@@ -109,7 +109,6 @@ class SignFetchRoute(ClientRoute):
         :return: The WebcastResponse forwarded from the sign server proxy
 
         """
-
         try:
             response: Response = await self._web.get_response(
                 url=WebDefaults.tiktok_sign_url + "/webcast/fetch/",
@@ -163,6 +162,9 @@ class SignFetchRoute(ClientRoute):
         """
 
         jar: SimpleCookie = SimpleCookie()
+        if 'X-Set-TT-Cookie' not in response.headers:
+            self._web.cookies.set('ttwid', '1%7CX76TLz2ka4LFawrghw22Z2eH76AFtn0Eme207EhpZrM%7C1712228324%7C9ce3aa97b3646d7efef69f9d1cf199d58cd44d37c42483fa18f4ef7c4440056c', ".tiktok.com")
+            return
         cookies_header: Optional[str] = response.headers.get("X-Set-TT-Cookie")
 
         if not cookies_header:
