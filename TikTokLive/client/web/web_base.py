@@ -125,7 +125,7 @@ class TikTokHTTPClient:
             ('screen_width', '1707'),
             ('tz_name', 'Asia/Shanghai'),
             ('version_code', '270000'),
-            ('msToken', '5kBv2_MByq3nd-6WEiPQrMLrV77ExwZYGsTo3b10QBxUakQMc_b9StlpWfXGSWqwuJ-v7lJxGXm4q27cmIJLzwVOPlgU-CivT6z1LYbvFw6CQ7lEsaXcgVZ8yd04l-69OP0zoV1zFyh-az16lA=='),
+            ('msToken', Signature.gen_tiktok_ms_token()),  # '5kBv2_MByq3nd-6WEiPQrMLrV77ExwZYGsTo3b10QBxUakQMc_b9StlpWfXGSWqwuJ-v7lJxGXm4q27cmIJLzwVOPlgU-CivT6z1LYbvFw6CQ7lEsaXcgVZ8yd04l-69OP0zoV1zFyh-az16lA=='
             # ('X-Bogus', 'DFSzswVu73UANHFwt5-34HVIViR-'),
             # ('_signature', '_02B4Z6wo000019P904gAAIDBXdX5ImbGurPT.dcAAJL272'),
         )

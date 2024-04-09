@@ -6,7 +6,7 @@
 # @Desc :
 
 from TikTokLive import TikTokLiveClient
-from TikTokLive.events import ConnectEvent, CommentEvent, JoinEvent
+from TikTokLive.events import ConnectEvent, CommentEvent, JoinEvent, RoomUserSeqEvent, EnvelopeEvent
 
 # live_addr = input("输入直播地址: ")
 live_addr = 'https://www.tiktok.com/@wjq6baodanqifei/live'
@@ -22,17 +22,28 @@ async def on_connect(event: ConnectEvent):
     print(f"Connected to @{event.unique_id} (Room ID: {client.room_id}")
 
 
+@client.on(RoomUserSeqEvent)
+async def on_room_user_seq(event: RoomUserSeqEvent):
+    print(f'\r当前总人数: {event.total}, 历史总人数: {event.total_user}', end="")
+
+
+# 监听宝箱
+@client.on(EnvelopeEvent)
+async def on_envelop(event: EnvelopeEvent):
+    print(event)
+
+
 # Or, add it manually via "client.add_listener()"
-async def on_comment(event: CommentEvent) -> None:
-    print(f"💌{event.user.nickname} -> {event.comment}")
+# async def on_comment(event: CommentEvent) -> None:
+#     print(f"💌{event.user.nickname} -> {event.comment}")
+#
+#
+# client.add_listener(CommentEvent, on_comment)
 
 
-client.add_listener(CommentEvent, on_comment)
-
-
-@client.on(JoinEvent)
-async def on_join(event: JoinEvent) -> None:
-    print(f'↗️ {event.user.nickname} join')
+# @client.on(JoinEvent)
+# async def on_join(event: JoinEvent) -> None:
+#     print(f'↗️ {event.user.nickname} join')
 
 
 # client.parse_unique_id()

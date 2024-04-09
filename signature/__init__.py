@@ -6,6 +6,7 @@
 import hashlib
 import random
 import re
+import time
 from http.cookies import SimpleCookie
 
 import execjs
@@ -97,21 +98,18 @@ class Signature:
 
         return random.randrange(10000000000000000000, 99999999999999999999)
 
+    msToken = 'uFYq9gk5bITk-_XlODxN8Fq6jwE0zKsHB257MfaZ0JIokfIzFVKMf9fe_aniHi0wkZYTAfnnbN5h-YxXr13Yj8miv1v2WL_ig0T2sVVSrhdfiFj55D63JY5D5Fsa-DTGizB0tFaZd86YqbKXjw=='
+
     @staticmethod
     def gen_tiktok_ms_token():
-        cookies = {
-            'ttwid': '1%7CdXcLHA1TVU3hhO97_Rx0SDmIiC702bzMrQOyzhx_PD0%7C1712477493%7C211de9c2beb0e1e814ace7a33fae19c27f5cf71ec207fdfc3efb498d221e601a',
-            'msToken': 'Wenv91UZGTahbiDz_1q0Jw4p0iiOP-SwJD1gob6mXqQtB5_t80c0zZyJqb1bJPaeBzgtXr1IbVS5L35Hng66ZVOw6IcCs1Ytj_rxcBwgmEF6sJ3VUzXag8TJr662HIFLRxyaMwtBUVkt_7bQKw==',
-        }
-
         headers = {
             'Referer': 'https://www.tiktok.com/',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         }
 
         params = (
-            ('msToken', 'uFYq9gk5bITk-_XlODxN8Fq6jwE0zKsHB257MfaZ0JIokfIzFVKMf9fe_aniHi0wkZYTAfnnbN5h-YxXr13Yj8miv1v2WL_ig0T2sVVSrhdfiFj55D63JY5D5Fsa-DTGizB0tFaZd86YqbKXjw=='),
-            ('X-Bogus', 'DFSzswVOOkVv75VXt55vXZVIVi2p'),
+            ('msToken', Signature.msToken),
+            # ('X-Bogus', 'DFSzswVOOkVv75VXt55vXZVIVi2p'),
         )
 
         data = {
@@ -119,14 +117,15 @@ class Signature:
             "version": 1,
             "dataType": 8,
             "strData": "3Z0GfhRSpkcp/ 18sbGpm1 T0dfamOREsbfGHRbQuBVy0Ow8hFjYX4wgp3pS/90WPviDkpkbu2/UAiw2AzATLvMrtfRplCk7JJdyC0bnbUTedwWd6vAvfMb4EaTggpRYV1et3GzH6uAjYGLYbQmtypWx5Za1tAFbMfZAN5ntFUwLBW09DHDKAPMcE9IzkokuNMoXUDQHRcbTIYTHraLa3R6mjo 9u4Jf9JgRNG76 lssj7JQyi8rPQtX3ogXv86XG6tXOWru6H DFMlNzamKLrQSAFiqBvEd9/jSHL7vKhWiKdEs6cWK6gXO9pgednqSmSLXSFNesI0gRlGQidcg Atyhb2DvRtJZj/TopRLFNydfhKEnlw8Dts5EqfFaNSLlM09h9RkLSur80r1EnC0PSZ3ygiy6ZjTOOhMbLewkNdHf45DIYx3yjHptz7 T8kCQRZslcad3QqxGHiVmOn33crtdeRuo WYq86taSAABcY3 3W9kCsRasdSPzGZ3g5eI260epnewT3 Icyuumgtq8v7nKgesqL/2nvSwUXSUccXAWqanQiyRY/1i0wyGFiIK1lhURTLRT6zVB9fjwhfCugo9g7/7nW6FNHl1YqbP9b2ANhNg23plI5qMEd18igPwRe7WR3kvX8Q5auIcdqXJWKAzRWDGnfFaeFOvjQTQKdK f1F53SPoTn1zmCxGla0BDbEUT2M98Vkw7vDCx1rFriW1uvcPNgfZhRwiSe1TUSbGijZvVfwFz7Eikab4VZ9vqsJ79gdfCdt39q7O0otZrJLcWaQPSryt1SIEXBZwFzaWi5Gz3MAxCs6W2CRqeJzZ7Akaeyko88UxEfROZ6vTCld2BJK34EzqBcGpBVCLpmRnMdr3/pA3BmfNeC23OpXg1qAzz4gjik0aL9jfDAz33K5P9g 5BTClH/dwqHBbS6HCbF/AN/Ty6AYmqEl/SE7V1nbl4eaPsbhe1XV 3rRgnJsLiLTV9oFbCQjRYOeQtGekvAS2KFWmg4piJBk8pwAQLOYKBIO8 66iDeC/UST VTlqLI6M8pvozGv01ODjZZyX 297acxkyu67rlfm0npW8sf3lHaOxWBNolDIj1YVVm9pwbYqLgw16MonQS6eTzzdmk1gbmvcMGi1a1NmlOUwWLZPAAMNAbsef0ypzEKr/geLihSyFxN77K2mR2ehnBu3o8s3ksrgSnC H/OJeaa7xCaqs2Ol0afkRa9owzu8kYU2ubyt3sY lMF/shJW/EPnq9YC6dHeopMBFSX98JIqzVX11iUu9Ch0sqfgXtnQHLXncQDK Ynq8Y5epPe2M1ghWQnbIxBsQpcW47//iFLLi9ZGYqNYY Dx/5tTshPHiRXehxIMpguIzoGboKRr crIM7MWnK/5nbkJE23XQ0q7 2Jamr0xVLhJLSfqTNfmLCFJf3YuuHSi5yV7vkok z54wXqMJBmNvFXvwI7X9emOvr3nc9Cclq4wkg66n/6XjfxKmOSSCyk1Nhy0I060gOYb54wcfbw2rU5IAStO DdNujZ92N2pFHFuGh52I92LUbK wqY8IFiknux/PNPX5mHw/ x4ND7hVsdPvEiy1mEIbgxykx2ojg9 sb1OI9sQ4pAgpY07CNov/rX4FJb86cVrJ8LjUL43hcDORKpovZsXtYY6tzA Bj8YrLaHcHzNZ HwPCOW7dTTTQk20V7 EVlXDohyYhGPW2RX6e7og8IILvLFneSwz2tVpzRQVHFJAxw/YKt1JGlOYtr4VB/7TQalOo76lzCWuMFuEJhJhWo10Vz3Q3oerfgwUbLvLVSuOCHnBz/zk/W3eJ92XNS/uiSStUg0ZawDYl0lEtShDMXF3ze9eh6y1ZAyiLeOcw06 VK3YinmfAi70XQmjVQVFlMb0t8f/R/H/0ZVLJxW326WhK2mEHI8qXcYAaZMgyvGgP0rWYeU8 qMW2DU8G9yfFikSk58mkZW8pRWwIIMYmUndRcS5q3Fxfi/06OyRH4kCGhKUZPl J3Efzl RIvb aVsWeR0aw66TpW9YMEWSuOlU7Sr3ejSD5BmPnlIzb srQ1tJSUgNpwbhiAchQfTn2c2jIY25mlqai7oXxF3OgtSi5Sz58p0FFqg1K AU2RWKdr7DrUMY721jZAiFiu8Zwt3H96rKKW10x/7HzXTfQIMZLn2NdhtRsohEOyyaF/hcRkUcuy1jdaNlMK 8VMh4X/xUXr0DSk ECa4kagi nX/UBC3P6WK6Y/zcb8tbaEtW4Rt7MsRj3tcMkXxOjiWuAx5g3sKn41Z4N3vCdRsJqNS6UqT Hxui0ILM XGBIkp5pKXkUkFdXiTB5GQXTYCZsLMMIQZ2O1jgP6Ruded8FpJFJf6P6xquBWQPQudcLwHTkUQ2hKzvcUx7QCy yhQFrdaF/sHNHY5JJRW3VFajYwDa6JafqyoF4ka2kpjnMOP42cbz3qPCKeVwN5EI2v5j1XLI9JjL EBQUSzRhPd2pGBXoNZfnvQryCEc5auK9THwnf/PrQxSPI8vJ59ZLmW/y9Vq5rfGXyZrQrxM5A61j3k8cgNeB1ryDw54hJJfTVlNWr revHb6OI5CPqeooqA3i9xAtUO8qwMAbdjvIaBrc6dBB3KqwRNjazmBrOYW901mmR91IVwIA9stQI9XGVQg87MSeW3j9FsUdCwdGK8ne2wpnPzoN3p8vW1mj6rDtth6Fk6Jp/0V24sh4U0l4j d7WCs9lb8EByyn6BV3eM9WusBVmmURMRUAP5dEsFbfLYjDff4EXiqXmdCESIG7MoUeoGy5gb/5LuWhYVlq7y8 2cGMpqjnZH T4iFgfVyPoEcLd5pKNx57SlCfyj2yRJ2MnR5n46nW2a3RRC/IJceVlOdhGSLl7chHk8BbpQ5s/WpjvKXWI6wc3Jqm0i7LOS3i2IcB0zMDxWTmU9jQdk5iG4LyKyxCezLYjTh4iUrEIGzNNxpciJ9jl RRU0Z1dZwLfLTHGaSR8osJS520X99u2xPR3u5ISgEm2bGU3B chxwiwNDvhnnvD ZpJoAFTZOuEp5OkpX7fGk2Vpd DunP2I/iCTIP0GHR1oNN7HNCH6SIOfeXyhFlutpsZoV5bi4CDsNrCLgJH0jYNlXepUqb0GAG2DrjBTOOciFRK2NQKIpipjzg8pYqFVZZEHPQ93mWwbbDmhkVN bSXR8VkBD4F9UKsYksPYw7mV9ilRykuUEHi9u0F2 xwcRl/sBebSWUI7uQPZ0HKeRXLPlQSF9dr9rQ IyDI4kLsD2 uvdO6SUmWLEAdVkE3ukrUHjvw3cAsOfg47zpYbmFKodshWfzNC7jQ72NaZd5VVZ0CC5tU3BqIU9Pc03VvKShcs7 BOAAC1odG698Lzi5MYv9KSiFo9MK9JGCMJCXSAxiBBjZ6Oeadwn1Xl r1ed lAhVfS9kPlBMCcJEfnUSZ2WOEsopTWfQPECM/QqRvJDPyif2M3qwrGnJVJYtckowIXNWk00qJTcLaKChZx9rSZUZWuC2rZkEDiwrynf1lqIXS ZheGrau ecJuWw0W0wRJXqCh4Ripr/uE8VUSMqRxqUiyGCgMU0fmhT8OVeWYC1T Wn4EHLmZZYrHN55gfZpwMWT5GHTsvR/tIy2S0oQXdhZhW2 brcqYLpAt2g6yrptzLBD5s/d8YbXhpPWAJsolO7XtKcn7j5LtmB/byvQJgBaN2wu9QFmi8izJaa5bmwAA6QqKvuElL0Q7NeT7AnY1gAEPjYonRuMxIw5UOf7qG6YS5QYkkVlPkS5tmYuxxa1j8AapQFl5qwDXtLDu WmDsbDxcNEc8lZc7nLmge8i6nKhNsBKKrzTWUQYLxG3dnV4srQBMd5oEDEruWne4kkGyw6MehREqNF/QXbTOR3G5M424P/wH1Zx97IvCLgCCmggRO neJ8E': '=",
-            "tspFromClient": 1712477499712
+            "tspFromClient": time.time()
         }
 
-        response = requests.post('https://mssdk-sg.tiktok.com/web/report', headers=headers, params=params, cookies=cookies, data=data)
+        response = requests.post('https://mssdk-sg.tiktok.com/web/report', headers=headers, params=params, data=data)
         # print(response.status_code)
         jar: SimpleCookie = SimpleCookie()
         jar.load(response.headers['Set-Cookie'])
-        return jar.get('msToken').value
+        Signature.msToken = jar.get('msToken').value
+        return Signature.msToken
 
 
 def test():
@@ -139,8 +138,11 @@ def test():
     print(ms_token)
     print(len(ms_token))
 
+    print(Signature.gen_tiktok_ms_token())
+
+
 # print(Signature.gen_access_key('7353551604618855966'))
-# test()
+test()
 
 # 原本的: DFSzswVObPhANnC2t-ClAIS79ddh
 # 生成的: DFSzswSLbPhANng1t-ClVU9WcBjn
