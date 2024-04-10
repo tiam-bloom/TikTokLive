@@ -4,10 +4,16 @@
 # @File : tiktok_live_test
 # @Project : TiktokApi
 # @Desc :
+import asyncio
+import logging
+import time
 
 from TikTokLive import TikTokLiveClient
+
+from TikTokLive.client.logger import TikTokLiveLogHandler, LogLevel
 from TikTokLive.events import ConnectEvent, CommentEvent, JoinEvent, RoomUserSeqEvent, EnvelopeEvent
 
+logger: logging.Logger = TikTokLiveLogHandler.get_logger(level=LogLevel.DEBUG)
 # live_addr = input("输入直播地址: ")
 live_addr = 'https://www.tiktok.com/@wjq6baodanqifei/live'
 
@@ -46,6 +52,22 @@ async def on_envelop(event: EnvelopeEvent):
 #     print(f'↗️ {event.user.nickname} join')
 
 
-# client.parse_unique_id()
+
+
+async def main():
+    is_living = await client.is_live(unique_id)
+
+    if is_living:
+        await client.start()
+        print(1)
+        await client.connect()
+        # print(2)
+        # time.sleep(10)
+        print("3")
+        await client.disconnect()
+    else:
+        logger.info(f'{unique_id} is offline!')
+
+
 if __name__ == '__main__':
-    client.run()
+    asyncio.run(main())

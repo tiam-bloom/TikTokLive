@@ -140,9 +140,8 @@ def test():
 
     print(Signature.gen_tiktok_ms_token())
 
-
 # print(Signature.gen_access_key('7353551604618855966'))
-test()
+# test()
 
 # 原本的: DFSzswVObPhANnC2t-ClAIS79ddh
 # 生成的: DFSzswSLbPhANng1t-ClVU9WcBjn
