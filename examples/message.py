@@ -15,7 +15,7 @@ from TikTokLive.events import ConnectEvent, CommentEvent, JoinEvent, RoomUserSeq
 
 logger: logging.Logger = TikTokLiveLogHandler.get_logger(level=LogLevel.DEBUG)
 # live_addr = input("输入直播地址: ")
-live_addr = 'https://www.tiktok.com/@wjq6baodanqifei/live'
+live_addr = 'https://www.tiktok.com/@murdymort/live'
 
 unique_id = TikTokLiveClient.parse_unique_id(live_addr)
 # Create the client
@@ -47,9 +47,9 @@ async def on_envelop(event: EnvelopeEvent):
 # client.add_listener(CommentEvent, on_comment)
 
 
-# @client.on(JoinEvent)
-# async def on_join(event: JoinEvent) -> None:
-#     print(f'↗️ {event.user.nickname} join')
+@client.on(JoinEvent)
+async def on_join(event: JoinEvent) -> None:
+    print(f'↗️ {event.user.nickname} join')
 
 
 
