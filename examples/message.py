@@ -5,6 +5,7 @@
 # @Project : TiktokApi
 # @Desc :
 import asyncio
+import json
 import logging
 import time
 
@@ -15,7 +16,7 @@ from TikTokLive.events import ConnectEvent, CommentEvent, JoinEvent, RoomUserSeq
 
 logger: logging.Logger = TikTokLiveLogHandler.get_logger(level=LogLevel.DEBUG)
 # live_addr = input("输入直播地址: ")
-live_addr = 'https://www.tiktok.com/@murdymort/live'
+live_addr = 'https://www.tiktok.com/@katilynnpaigeasmr/live'
 
 unique_id = TikTokLiveClient.parse_unique_id(live_addr)
 # Create the client
@@ -30,28 +31,27 @@ async def on_connect(event: ConnectEvent):
 
 @client.on(RoomUserSeqEvent)
 async def on_room_user_seq(event: RoomUserSeqEvent):
-    print(f'\r当前总人数: {event.total}, 历史总人数: {event.total_user}', end="")
+    print(f'当前总人数: {event.total}, 历史总人数: {event.total_user}')
 
 
 # 监听宝箱
 @client.on(EnvelopeEvent)
 async def on_envelop(event: EnvelopeEvent):
-    print(event)
+    print(f"宝箱事件! 宝箱ID: {event.envelope_info.envelope_id}, 发送用户ID: {event.envelope_info.send_user_id},  房间ID: {event.common.room_id}")
+    # print(json.dumps(event, indent=2, ensure_ascii=False))
 
 
 # Or, add it manually via "client.add_listener()"
-# async def on_comment(event: CommentEvent) -> None:
-#     print(f"💌{event.user.nickname} -> {event.comment}")
-#
-#
-# client.add_listener(CommentEvent, on_comment)
+async def on_comment(event: CommentEvent) -> None:
+    print(f"💌{event.user.nickname} -> {event.comment}")
 
 
-@client.on(JoinEvent)
-async def on_join(event: JoinEvent) -> None:
-    print(f'↗️ {event.user.nickname} join')
+client.add_listener(CommentEvent, on_comment)
 
 
+# @client.on(JoinEvent)
+# async def on_join(event: JoinEvent) -> None:
+#     print(f'↗️ {event.user.nickname} join')
 
 
 async def main():
@@ -70,4 +70,5 @@ async def main():
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    # asyncio.run(main())
+    client.run()
