@@ -7,16 +7,19 @@
 import asyncio
 import json
 import logging
+import threading
 import time
 
 from TikTokLive import TikTokLiveClient
 
 from TikTokLive.client.logger import TikTokLiveLogHandler, LogLevel
+from TikTokLive.client.ws import ws_server
+from TikTokLive.client.ws.ws_server import start_websocket_server
 from TikTokLive.events import ConnectEvent, CommentEvent, JoinEvent, RoomUserSeqEvent, EnvelopeEvent
 
 logger: logging.Logger = TikTokLiveLogHandler.get_logger(level=LogLevel.DEBUG)
 # live_addr = input("输入直播地址: ")
-live_addr = 'https://www.tiktok.com/@katilynnpaigeasmr/live'
+live_addr = 'https://www.tiktok.com/@lemmon664/live'
 
 unique_id = TikTokLiveClient.parse_unique_id(live_addr)
 # Create the client
@@ -55,20 +58,13 @@ client.add_listener(CommentEvent, on_comment)
 
 
 async def main():
-    is_living = await client.is_live(unique_id)
-
-    if is_living:
-        await client.start()
-        print(1)
-        await client.connect()
-        # print(2)
-        # time.sleep(10)
-        print("3")
-        await client.disconnect()
-    else:
-        logger.info(f'{unique_id} is offline!')
+    async with asyncio.TaskGroup() as tg:
+        tg.create_task(start_websocket_server())
+        tg.create_task(client.run())
 
 
 if __name__ == '__main__':
-    # asyncio.run(main())
+    # 单独开一个线程, 用户启动转发服务
+    threading.Thread(target=ws_server.main).start()
+    client.web.set_session_id("0febd4d06773664959ba5dd33ca7bfa7")
     client.run()

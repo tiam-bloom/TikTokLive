@@ -9,6 +9,7 @@ from websockets_proxy import websockets_proxy
 from websockets_proxy.websockets_proxy import ProxyConnect
 
 from TikTokLive.client.logger import TikTokLiveLogHandler
+from TikTokLive.client.ws.ws_server import message_queue
 from TikTokLive.proto import WebcastPushFrame, WebcastResponse, WebcastResponseMessage
 
 
@@ -213,6 +214,7 @@ class WebcastWSClient:
 
         """
         # todo 处理接收的消息
+        await message_queue.put(data)
 
         # Extract push frame
         push_frame: WebcastPushFrame = WebcastPushFrame().parse(data)
